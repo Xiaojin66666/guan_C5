@@ -1,5 +1,5 @@
 _target_: src.data.ftd_datamodule.FtdDataModule
-data_dir: "/home/user/桌面/ftd_dataset/basedata/ftd_lstm.h5"
+data_dir: "/home/admin1030/bishe/ftd_dataset/basedata/ftd_lstm.h5"
 batch_size: 1
 test_batch_size: 1
 num_workers: 4
