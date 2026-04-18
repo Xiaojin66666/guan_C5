@@ -1,0 +1,100 @@
+[[tool.uv.index]]
+url="https://mirrors.pku.edu.cn/pypi/web/simple"
+default=true
+
+[tool.pytest.ini_options]
+addopts = [
+  "--color=yes",
+  "--durations=0",
+  "--strict-markers",
+  "--doctest-modules",
+]
+filterwarnings = [
+  "ignore::DeprecationWarning",
+  "ignore::UserWarning",
+]
+log_cli = "True"
+markers = [
+  "slow: slow tests",
+]
+minversion = "6.0"
+testpaths = "tests/"
+
+
+[tool.pyright]
+root = ['src']
+include = ["src"]
+exclude = ["**/node_modules", "**/__pycache__"]
+
+useLibraryCodeForTypes = true
+
+typeCheckingMode = "off"
+reportMissingImports = "information"
+reportMissingTypeStubs = "information"
+# reportUnknownMemberType = "information"
+diagnosticMode = 'openFilesOnly'
+
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: nocover",
+    "raise NotImplementedError",
+    "raise NotImplementedError()",
+    "if __name__ == .__main__.:",
+]
+
+[tool.black]
+line-length = 80
+
+[tool.ruff]
+preview = true
+exclude = [".venv", "build", ".git"]
+select = [
+    "E",      # pycodestyle
+    "F",      # pyflakes
+    "UP",     # pyupgrade
+    "I",
+    "PL",
+    "UP",
+    "N"
+]
+unfixable = ["F401"]
+line-length = 120
+[tool.ruff.flake8-quotes]
+inline-quotes = "single"
+
+
+[tool.ruff.flake8-annotations]
+mypy-init-return = false
+[project]
+name = "sampleproject"
+version = "0.0.1"
+description = "A sample Python project"
+readme = "README.md"
+requires-python = ">=3.9,<3.12"
+dependency=[
+    "aim>=3.29.1",
+    "hydra-colorlog>=1.2.0",
+    "hydra-core>=1.3.2",
+    "hydra-optuna-sweeper>=1.2.0",
+    "lightning>=2.5.5",
+    "rich>=14.2.0",
+    "rootutils>=1.0.7",
+    "torch>=2.9.0",
+    "torchmetrics>=1.8.2",
+]
+dependencies = [
+    "aim>=3.29.1",
+    "h5py>=3.14.0",
+    "hydra-colorlog>=1.2.0",
+    "hydra-core>=1.3.2",
+    "hydra-optuna-sweeper>=1.2.0",
+    "lightning>=2.5.5",
+    "matplotlib>=3.9.4",
+    "pandas>=2.3.3",
+    "rich>=14.2.0",
+    "rootutils>=1.0.7",
+    "scikit-learn>=1.6.1",
+    "torch>=2.8.0",
+    "torchmetrics>=1.8.2",
+]

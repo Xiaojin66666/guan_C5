@@ -1,0 +1,25 @@
+_target_: src.models.ftd_module.FtdModule
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.0001
+  weight_decay: 0.0
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  _partial_: true
+  mode: min
+  factor: 0.1
+  patience: 10
+
+net:
+  _target_: src.models.components.nn.AirflowNN
+  encoder: [31, 512, 512, 64]
+  decoder: [64, 512, 512, 6]
+  nb_hidden_layers: 8
+  size_hidden_layers: 512
+  bn_bool: true
+
+# compile model for faster training with pytorch 2.0
+compile: false

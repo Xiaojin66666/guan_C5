@@ -1,0 +1,38 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /data: ftd
+  - override /model: ftd
+  - override /callbacks: default
+  - override /trainer: default
+  - override /logger: csv
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["ftd", "mutiLSTM"]
+
+seed: 42
+
+trainer:
+  min_epochs: 10
+  max_epochs: 300
+  accelerator: gpu
+
+callbacks:
+  model_checkpoint:
+    dirpath: ${paths.output_dir}/checkpoints
+    filename: "epoch_{epoch:03d}"
+    monitor: "val/loss"
+    mode: "min"
+    save_last: True
+    auto_insert_metric_name: False
+
+  early_stopping:
+    monitor: "val/loss"
+    patience: 20
+    mode: "min"
+

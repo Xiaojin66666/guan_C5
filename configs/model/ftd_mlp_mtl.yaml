@@ -1,0 +1,108 @@
+# ftd_encoder_decoder_mtl_lstm.yaml
+_target_: src.models.ftd_module.FtdModule
+
+# LSTM参数
+input_size: 31
+hidden_size: 128
+num_layers: 4
+
+# 多任务参数
+task_sizes: [1, 1, 1, 1, 1, 1]  # 6个任务，每个任务输出1个值
+task_names: ["Cy", "Cl", "Cm", "Cn", "CD", "CL"]
+
+# 编码器-解码器参数
+encoder_dims: [31, 512, 512, 128]  # 编码器维度
+decoder_dims: [64, 512, 512]      # 解码器基础维度（不包含输出层）
+
+# 模型结构参数
+shared_layers: 1
+task_specific_layers: 2
+dropout: 0.1
+encoder_batch_norm: false
+decoder_batch_norm: false
+
+# 训练参数
+loss_term: "stch"  # 使用STCH多任务学习方法
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.001
+  weight_decay: 0.0
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  _partial_: true
+  mode: min
+  factor: 0.1
+  patience: 10
+
+# 编译选项
+compile: false
+
+## ftd_encoder_decoder_mtl_lstm.yaml
+#_target_: src.models.ftd_module.FtdModule
+#
+## LSTM参数
+#input_size: 31
+#hidden_size: 128
+##num_layers: 3
+#
+#
+## 1. 将任务大小改回全 1
+#task_sizes: [1, 1, 1, 1, 1, 1]
+#
+## 2. 将任务名称改回 6 个物理量名称
+#task_names: ["Cy", "Cl", "Cm", "Cn", "CD", "CL"]
+#
+## 3. 任务索引 (task_indices) 可以删除，或者设为 null
+## 代码中会自动检测：如果 task_indices 为 None，它会默认按顺序生成 [[0], [1], [2], [3], [4], [5]]
+#
+#
+### 多任务参数：改为2个任务组
+##task_sizes: [3, 3]
+##task_names: ["Lateral", "Longitudinal"]
+##
+### 【新增】任务索引映射：定义每个任务对应原始数据的列索引
+### Lateral(横侧向)对应: 0(Cy), 1(Cl), 3(Cn)
+### Longitudinal(纵向)对应: 2(Cm), 4(CD), 5(CL)
+##
+##task_indices:
+##  - [0, 1, 3]
+##  - [2, 4, 5]
+### --- 修改部分结束 ---
+##
+### 【新增】这里列出原始数据的列名，用于显示单独的损失
+##original_task_names: ["Cy", "Cl", "Cm", "Cn", "CD", "CL"]
+#
+#
+#
+## 编码器-解码器参数
+#encoder_dims: [31, 512, 512, 64]  # 编码器维度
+#decoder_dims: [128, 512, 512]      # 解码器基础维度（不包含输出层）
+#
+## 模型结构参数
+#shared_layers: 1
+#task_specific_layers: 1
+#dropout: 0.1
+#encoder_batch_norm: false
+#decoder_batch_norm: false
+#
+## 训练参数
+#loss_term: "stch"  # 使用STCH多任务学习方法
+#
+#optimizer:
+#  _target_: torch.optim.Adam
+#  _partial_: true
+#  lr: 0.0001
+#  weight_decay: 0.0
+#
+#scheduler:
+#  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+#  _partial_: true
+#  mode: min
+#  factor: 0.1
+#  patience: 10
+#
+## 编译选项
+#compile: false
